@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :location
+  attr_accessible :location, :name, :real_name, :password, :password_confirmation
   has_secure_password
 
   # By default, use the GEOS implementation for spatial columns.

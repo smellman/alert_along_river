@@ -1,17 +1,13 @@
 %h1 Listing users
 
-%table
-  %tr
-    %th
-    %th
-    %th
-
-  - @users.each do |user|
-    %tr
-      %td= link_to 'Show', user
-      %td= link_to 'Edit', edit_user_path(user)
-      %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
+= form_tag({:action => :login, :method => :post}) do
+  %div.item
+    = label_tag :name, 'User Name :'
+    = text_field_tag :name
+  %div.item
+    = label_tag :password, 'Password :'
+    = password_field_tag :password
+  %div.item
+    = submit_tag 'Login'
 
 = link_to 'New User', new_user_path

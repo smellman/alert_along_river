@@ -40,3 +40,5 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 gem 'haml'
 gem 'haml-rails'
+
+gem 'openlayers-rails'

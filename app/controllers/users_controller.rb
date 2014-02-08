@@ -1,20 +1,20 @@
 class UsersController < ApplicationController
+  before_filter :load_user
+
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
-
+    if @user
+      redirect_to :action => :show
+    end
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @users }
     end
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -80,4 +80,50 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def login
+    logger.debug(params)
+    if params[:name].blank?
+      flash[:error] = "Please input user name"
+      respond_to do |format|
+        format.html { render action: "index" }
+      end
+      return
+    end
+    if params[:password].blank?
+      flash[:error] = "Please input password"
+      respond_to do |format|
+        format.html { render action: "index" }
+      end
+      return
+    end
+    user = User.where(:name => params[:name]).first.try(:authenticate, params[:password])
+    unless user
+      flash[:error] = "Invalid user name or password"
+      respond_to do |format|
+        format.html { render action: "index" }
+      end
+      return
+    end
+    session[:user] = user
+    redirect_to :action => :show
+    return
+  end
+
+  def logout
+  end
+
+  private
+
+  def load_user
+    @user = User.find_by_id(session[:user][:id]) if session[:user]
+  end
+
+  def login_check
+    unless session[:user]
+      redirect_to :controller => :users, :action => :index
+      return false
+    end
+  end
+
 end

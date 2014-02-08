@@ -5,6 +5,19 @@
       %ul
         - @user.errors.full_messages.each do |msg|
           %li= msg
-
+  .item
+    = f.label :name
+    = f.text_field :name
+  .item
+    = f.label :real_name
+    = f.text_field :real_name
+  .item
+    = f.label :password
+    = f.password_field :password
+  .item
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation
+  .item
+    = hidden_field_tag "user[location]", "POINT(79.879392385483 7.5985157489784)"
   .actions
     = f.submit 'Save'
