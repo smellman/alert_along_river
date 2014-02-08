@@ -36,6 +36,7 @@ class AreasController < ApplicationController
   # GET /areas/1/edit
   def edit
     @area = Area.find(params[:id])
+    @other_areas = Area.where('id != ?', params[:id])
   end
 
   # POST /areas
@@ -82,4 +83,9 @@ class AreasController < ApplicationController
     end
   end
 
+  def append_child
+    @area = Area.find(params[:id])
+    @can_append_child_areas = @area.can_append_child
+  end
+  
 end

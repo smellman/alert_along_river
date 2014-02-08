@@ -17,3 +17,9 @@
           
   .actions
     = f.submit 'Save'
+
+- @other_areas.each do |area|
+  - area_id = "area_" + area.id.to_s
+  = hidden_field_tag area_id, area.area.to_s
+  :javascript
+    insert_vector_blue_color("##{area_id}");

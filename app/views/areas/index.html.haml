@@ -2,16 +2,26 @@
 
 %table
   %tr
-    %th
-    %th
-    %th
+    %th name
+    %th Show
+    %th Edit
+    %th Append Child
+    %th Destroy
 
   - @areas.each do |area|
     %tr
+      %td= area.name
       %td= link_to 'Show', area
       %td= link_to 'Edit', edit_area_path(area)
+      %td Append Child
       %td= link_to 'Destroy', area, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
+#map
+- @areas.each do |area|
+  - area_id = "area_" + area.id.to_s
+  = hidden_field_tag area_id, area.area.to_s
+  :javascript
+    insert_vector_blue_color("##{area_id}");
 %br
-
+  
 = link_to 'New Area', new_area_path

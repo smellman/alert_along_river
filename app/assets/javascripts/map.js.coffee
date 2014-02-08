@@ -43,6 +43,17 @@ root.init_editable_map = (element) ->
   root.editable_vector(elem)
   return
 root.insert_vector = (element) ->
+  root.insert_vector_with_style(element, null)
+  return
+root.insert_vector_blue_color = (element) ->
+  style =
+    strokeColor: "#0000ff",
+    fillColor: "#0000ff",
+    fillOpacity: 0.4,
+    strokeWidth: 1
+  root.insert_vector_with_style(element, style)
+  return
+root.insert_vector_with_style = (element, style) ->
   val = $(element).val()
   if val == ""
     return
@@ -59,12 +70,18 @@ root.insert_vector = (element) ->
   if features
     if features.constractor != Array
       features = [features]
+    append_features = []
     for feature in features
       unless root.bounds
         root.bounds = feature.geometry.getBounds()
       else
         root.bounds.extend(feature.geometry.getBounds())
-    root.vector.addFeatures(features)
+      if style
+        feature.style = style
+        append_features.push(feature)
+      else
+        append_features.push(feature)
+    root.vector.addFeatures(append_features)
     root.map_obj.zoomToExtent(root.bounds)
   return
 	
