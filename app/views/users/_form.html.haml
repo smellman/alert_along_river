@@ -18,6 +18,9 @@
     = f.label :password_confirmation
     = f.password_field :password_confirmation
   .item
-    = hidden_field_tag "user[location]", "POINT(79.879392385483 7.5985157489784)"
+    = hidden_field_tag "user[location]", @user.location.to_s
+
+  .item
+    #map
   .actions
     = f.submit 'Save'

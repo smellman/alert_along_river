@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :load_user
+  before_filter :login_check, :except => [:login, :index, :new, :create]
 
   # GET /users
   # GET /users.json
@@ -106,7 +107,7 @@ class UsersController < ApplicationController
       return
     end
     session[:user] = user
-    redirect_to :action => :show
+    redirect_to :action => :show, :id => user.id
     return
   end
 
