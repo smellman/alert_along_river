@@ -1,0 +1,10 @@
+= form_for @area do |f|
+  - if @area.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@area.errors.count, "error")} prohibited this area from being saved:"
+      %ul
+        - @area.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'
