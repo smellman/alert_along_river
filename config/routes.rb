@@ -2,6 +2,14 @@ AlertAlongRiver::Application.routes.draw do
   resources :users
   match 'users/login' => 'users#login'
   resources :areas
+
+  resources :admin_account, :only => [:index, :login, :logout] do
+    collection do
+      get :index
+      post :login
+      get :logout
+    end
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

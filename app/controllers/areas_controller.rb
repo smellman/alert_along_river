@@ -1,4 +1,5 @@
 class AreasController < ApplicationController
+  before_filter :admin?
   # GET /areas
   # GET /areas.json
   def index
@@ -25,7 +26,7 @@ class AreasController < ApplicationController
   # GET /areas/new.json
   def new
     @area = Area.new
-
+    @other_areas = Area.all
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @area }
@@ -80,4 +81,5 @@ class AreasController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 end

@@ -5,6 +5,15 @@
       %ul
         - @area.errors.full_messages.each do |msg|
           %li= msg
-
+  .item
+    = f.label :name
+    = f.text_field :name
+  = hidden_field_tag "area[area]", @area.area.to_s
+  .item
+    #map
+    :javascript
+      init_editable_map("#area_area");
+      insert_vector("#area_area");
+          
   .actions
     = f.submit 'Save'

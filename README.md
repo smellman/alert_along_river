@@ -1,5 +1,8 @@
+# Alert system along rivers
 
-# setup
+## setup
+
+install postgis and ...
 
     % sudo -u postgres createuser --interactive -P alert_along_river
     % sudo -u postgres createdb -O alert_along_river alert_along_river_development
@@ -12,3 +15,5 @@
 	% sudo -u postgres psql alert_along_river_production -c "CREATE EXTENSION postgis;"
 	% sudo -u postgres psql alert_along_river_production -c "CREATE EXTENSION postgis_topology;"
 	% bundle install
+	% bundle exec rake db:migrate
+	% bundle exec rake db:seed

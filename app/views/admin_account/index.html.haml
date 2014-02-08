@@ -1,4 +1,4 @@
-%h1 for User
+%h1 Admin Login
 
 = form_tag({:action => :login, :method => :post}) do
   %div.item
@@ -9,5 +9,3 @@
     = password_field_tag :password
   %div.item
     = submit_tag 'Login'
-
-= link_to 'New User', new_user_path
