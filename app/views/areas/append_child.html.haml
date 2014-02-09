@@ -1,0 +1,21 @@
+%h1 Append Child Area
+
+#map
+= hidden_field_tag "current_area", @area.area.to_s
+:javascript
+  insert_vector("#current_area");
+
+- @can_append_child_areas.each do |area|
+  - area_id = "area_" + area.id.to_s
+  = hidden_field_tag area_id, area.area.to_s
+  :javascript
+    insert_vector_blue_color("##{area_id}");
+
+= form_for @area, :url => {:action => :set_child_area}, :html => {:method => :post} do |f|
+  .item
+    = label_tag :child_id, "Select Area:"
+    - children = @can_append_child_areas.map {|item| [item.name, item.id]}
+    = select_tag :child_id, options_for_select(children)
+
+  .actions
+    = f.submit 'Save'

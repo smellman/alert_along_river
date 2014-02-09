@@ -1,7 +1,12 @@
 AlertAlongRiver::Application.routes.draw do
   resources :users
   match 'users/login' => 'users#login'
-  resources :areas
+  resources :areas do
+    member do
+      get :append_child
+      post :set_child_area
+    end
+  end
 
   resources :admin_account, :only => [:index, :login, :logout] do
     collection do

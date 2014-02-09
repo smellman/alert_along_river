@@ -1,4 +1,5 @@
 class Area < ActiveRecord::Base
+  default_scope order('id')
   attr_accessible :name, :area, :left, :right, :parent_left, :parent_right
 
   # By default, use the GEOS implementation for spatial columns.
@@ -36,12 +37,12 @@ class Area < ActiveRecord::Base
     return ret
   end
 
-  def can_append_child_ids
+  def in_node_ids
     self.parent_ids | self.child_ids
   end
   
   def can_append_child
-    self.class.where(self.class.arel_table[:id].not_in self.can_append_child_ids)
+    self.class.where(self.class.arel_table[:id].not_in self.in_node_ids)
   end
 
   def left_obj

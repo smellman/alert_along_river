@@ -87,5 +87,17 @@ class AreasController < ApplicationController
     @area = Area.find(params[:id])
     @can_append_child_areas = @area.can_append_child
   end
-  
+
+  def set_child_area
+    @area = Area.find(params[:id])
+    @child = Area.find(params[:child_id])
+    if @area.append_child(@child)
+      @area.save
+      @child.save
+      respond_to do |format|
+        format.html { redirect_to @area, notice: 'Area was successfully updated.' }
+        format.json { head :no_content }
+      end
+    end
+  end
 end
