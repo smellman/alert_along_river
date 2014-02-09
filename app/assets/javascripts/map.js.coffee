@@ -11,11 +11,34 @@ root.init_map = () ->
       new OpenLayers.Projection("EPSG:4326"),
       root.map_obj.getProjectionObject()
     ), 12)
+    root.map_obj.addControl(new OpenLayers.Control.LayerSwitcher())
     return
+root.read_geojson = () ->
+  $.getJSON("/river_lka.geojson", (data) ->
+    in_options =
+      'internalProjection': root.map_obj.getProjectionObject(),
+      'externalProjection': new OpenLayers.Projection("CRS:84")
+    geojson_format = new OpenLayers.Format.GeoJSON(in_options)
+    style =
+      strokeColor: "#0000ff",
+      fillColor: "#0000ff",
+      fillOpacity: 0.4,
+      strokeWidth: 1
+    root.geojson_layer = new OpenLayers.Layer.Vector("GeoJSON Layer", options =
+      styleMap: new OpenLayers.StyleMap(style)
+    )
+    root.map_obj.addLayer(root.geojson_layer)
+    features = (geojson_format.parseFeature feature for feature in data.features)
+    root.geojson_layer.addFeatures(features)
+    #root.zoom_to_features(features)
+    return
+  )
+  return
 root.init_vector = () ->
   if root.map_obj
     root.vector = new OpenLayers.Layer.Vector("Vector Layer")
     root.map_obj.addLayer(root.vector)
+    root.read_geojson()
     return
 root.editable_vector = (insert_element) ->
   if root.map_obj and root.vector
@@ -72,16 +95,19 @@ root.insert_vector_with_style = (element, style) ->
       features = [features]
     append_features = []
     for feature in features
-      unless root.bounds
-        root.bounds = feature.geometry.getBounds()
-      else
-        root.bounds.extend(feature.geometry.getBounds())
       if style
         feature.style = style
         append_features.push(feature)
       else
         append_features.push(feature)
     root.vector.addFeatures(append_features)
-    root.map_obj.zoomToExtent(root.bounds)
+    root.zoom_to_features(features)
   return
-	
+root.zoom_to_features = (features) ->
+  for feature in features
+    unless root.bounds
+      root.bounds = feature.geometry.getBounds()
+    else
+      root.bounds.extend(feature.geometry.getBounds())
+  root.map_obj.zoomToExtent(root.bounds)
+  return

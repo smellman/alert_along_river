@@ -4,7 +4,7 @@ class AreasController < ApplicationController
   # GET /areas.json
   def index
     @areas = Area.all
-
+    @target_users = User.where(User.arel_table[:location].not_eq nil)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @areas }
@@ -99,5 +99,11 @@ class AreasController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  def alert
+    @area = Area.find(params[:id])
+    @alert_areas = @area.alert_areas
+    @target_users = @area.target_users
   end
 end

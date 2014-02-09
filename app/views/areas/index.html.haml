@@ -7,6 +7,7 @@
     %th Edit
     %th Append Child
     %th Destroy
+    %th Alert
 
   - @areas.each do |area|
     %tr
@@ -15,6 +16,7 @@
       %td= link_to 'Edit', edit_area_path(area)
       %td= link_to 'Append Child', {:action => :append_child, :id => area.id}
       %td= link_to 'Destroy', area, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to 'Show Alert', {:action => :alert, :id => area.id}
 
 #map
 - @areas.each do |area|
@@ -22,6 +24,11 @@
   = hidden_field_tag area_id, area.area.to_s
   :javascript
     insert_vector_blue_color("##{area_id}");
+- @target_users.each do |u|
+  - user_id = "user_" + u.id.to_s
+  = hidden_field_tag user_id, u.location.to_s
+  :javascript
+    insert_vector("##{user_id}");
 %br
   
 = link_to 'New Area', new_area_path

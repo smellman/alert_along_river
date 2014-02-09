@@ -45,6 +45,10 @@ class Area < ActiveRecord::Base
     self.class.where(self.class.arel_table[:id].not_in self.in_node_ids)
   end
 
+  def alert_areas
+    self.class.where(self.class.arel_table[:id].in self.child_ids)
+  end
+  
   def left_obj
     return nil unless self.left
     self.class.find_by_id(self.left)
